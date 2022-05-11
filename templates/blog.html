@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+  <title>Inove Blog</title>
+</head>
+<body>
+  <section id="seccionUsuario">
+    <div id="divFoto">
+      <img src="{{ foto }}" alt="Image">
+      <input type="file" id="foto" name ="foto"/>
+      <button id="subirFoto" path="{{url_for('foto')}}">subir foto</button>
+    </div>
+    <div id="divUsuario">
+      <h2>{{usuario}}</h2 >
+    </div>
+  </section>
+  <section id="publicar">
+    <form method = "POST" action="{{url_for('post')}}" id="postform">
+      <input type="text" id="usuario" name="usuario" value={{usuario}} hidden>
+      <label>Titulo:</label>      
+      <input type="text" name="titulo" required>
+      <label>Texto:</label>
+      <textarea form="usrform" name="texto" placeholder="escriba su post" rows=3 minlength=10 maxlength=300 required></textarea>
+      <input type="submit" value="Publicar">
+    </form>
+  </section>
+
+  <script src="{{ url_for('static', filename='js/blog.js') }}"></script>
+
+</body>
+</html>
