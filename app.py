@@ -41,7 +41,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 LOGIN_PASSWORD = "inovejs"
     
 
-@app.route('/inoveblog/login', methods=['GET', 'POST'])
+@app.route('/blog/login', methods=['GET', 'POST'])
 def bloglogin():
     try:
         if request.method == 'GET':
@@ -76,7 +76,11 @@ def bloglogin():
         print(jsonify({'trace': traceback.format_exc()}))
         return Response(status=400)
 
-@app.route("/inoveblog")
+@app.route("/")
+def index():
+    return redirect(url_for('bloglogin'))
+
+@app.route("/blog")
 @login_required
 def blog():
     try:
@@ -127,4 +131,4 @@ if __name__ == '__main__':
     print('Inove@Server start!')
 
     # Lanzar server
-    app.run(host="127.0.0.1", port=5000)
+    app.run(host="0.0.0.0", port=5000)
