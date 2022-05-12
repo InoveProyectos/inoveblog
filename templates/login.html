@@ -1,7 +1,10 @@
 <!doctype html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/inove_icon.png') }}" sizes="32x32" />
     <title>Inove Blog</title>
 </head>
 <body>
@@ -10,7 +13,7 @@
     <input id="usuario" type="text" value="diego" placeholder="usuario"/>
     <label for="usuario">Contraseña de curso:</label>
     <input id="password" type="password" value="inovejs" placeholder="contraseña"/>
-    <button id="ingresar" path="{{url_for('login')}}" redirect="{{url_for('blog')}}">Identificarse</button>
+    <button id="ingresar" path="{{url_for('api_login')}}" redirect="{{url_for('blog')}}">Identificarse</button>
 
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>

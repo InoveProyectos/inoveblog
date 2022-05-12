@@ -1,7 +1,10 @@
 <!doctype html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/inove_icon.png') }}" sizes="32x32" />
   <title>Inove Blog</title>
 </head>
 <body>
@@ -31,8 +34,8 @@
       <p>{{apikey}}</p>
     </section>
     <section id="seccionPublicar">
-      <input type="hidden" id="usuario" name="usuario" value={{usuario}}>
-      <input type="hidden" id="apikey" name="usuario" value={{apikey}}>
+      <input type="hidden" id="usuario" value={{usuario}}>
+      <input type="hidden" id="apikey" value={{apikey}}>
       <label for="titulo">Titulo:</label>      
       <input type="text" id="titulo" name="titulo">
       <label for="texto">Texto:</label>

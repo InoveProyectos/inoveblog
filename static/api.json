@@ -1,0 +1,149 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "InoveBlog API",
+    "description": "API de prueba para el curso de Javascript"
+  },
+  "paths": {
+    "/api/v1.0/login": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "description": "Endpoint que permite logearnos al sistema",
+        "consumes": "application/x-www-form-urlencoded",
+        "produces": "application/json",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "usuario": { 
+                    "description": "Usuario de inove",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "Contraseña del curso",
+                    "type": "string"
+                  }
+                },
+                "required": ["usuario", "password"] 
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retonar la API Key del usuario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "json",
+                  "example": "{'apikey': 'ABC123'}"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales invalidas"
+          }
+        }
+      }
+    },
+    "/api/v1.0/post": {
+      "get": {
+        "tags": [
+          "post"
+        ],
+        "description": "Endpoint que permite retornar los últimos 5 posts del usuario",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "usuario",
+            "schema": {
+              "type": "string",
+              "description": "usuario de inove"
+            }
+          },
+          {
+            "in": "query",
+            "name": "apikey",
+            "schema": {
+              "type": "string",
+              "description": "apikey del usuario"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna los últimos 5 posts del usuario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "post",
+                  "example": "{'posts': <post list>}"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales invalidas"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "post"
+        ],
+        "description": "Endpoint que permite publicar un post nuevo",
+        "consumes": "application/json",
+        "produces": "application/json",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "usuario": { 
+                    "description": "Usuario de inove",
+                    "type": "string"
+                  },
+                  "apikey": {
+                    "description": "API Key",
+                    "type": "string"
+                  },
+                  "titulo": {
+                    "type": "string"
+                  },
+                  "texto": {
+                    "type": "string"
+                  }
+                },
+                "required": ["usuario", "apikey", "titulo", "texto"] 
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna el post insertado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "post",
+                  "example": "{'id': <numero>, 'titulo': 'titulo del post', 'texto': 'texto del post'}"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales invalidas"
+          }
+        }
+      }
+    }
+  }
+}
