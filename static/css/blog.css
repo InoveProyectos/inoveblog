@@ -1,49 +1,128 @@
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-size: 24px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+  text-decoration: none;
+  font-size: 24px;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+#container {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgb(200,200,200, 0.2) 10px,
+    rgb(200,200,200, 0.2) 20px
+  );
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+header {
+  width: 100%;
+  background-color: #2a2a2a;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header h3{
+  text-align: center;
+  color: white;
+}
+
+header h4{
+  text-align: center;
+  color: white;
+  font-size: 16px;
+}
+
+section {
+  /*background-color: rgb(253, 252, 252);*/
+  width: 100%;
+  border: 3px solid gray;
+  border-radius: 5px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* -------- Seccion Usuario --------- */
+
 #seccionUsuario {
-    width: 400px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
 #divFoto {
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;    
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;    
 }
 
 #divFoto img {
-    width: 150px;
+  width: 60%;
+  max-width: 150px;
 }
 
 #divFoto input {
-    width: 100%;
-    display: inline-block;
-    background-color: aqua;
+  width: 100%;
+  display: inline-block;
+  background-color: aqua;
 }
 
 #divFoto button {
-    display: inline-block;
-    width: 100%;
+  display: inline-block;
+  width: 100%;
 }
 
 #divUsuario {
-    width: 200px;
-    text-align: center;
+  width: 50%;
+  text-align: center;
+}
+
+/* -------- Seccion Post --------- */
+
+#seccionPublicar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+}
+
+#seccionPublicar #titulo {
+  width: 100%;
+}
+
+#seccionPublicar #texto {
+   width: 100%;
+   font-size: 16px;
+ }
+
+#seccionPublicar button {
+  width: 100%;
 }

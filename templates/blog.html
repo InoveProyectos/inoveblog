@@ -5,26 +5,44 @@
   <title>Inove Blog</title>
 </head>
 <body>
-  <section id="seccionUsuario">
-    <div id="divFoto">
-      <img src="{{ foto }}" alt="Image">
-      <input type="file" id="foto" name ="foto"/>
-      <button id="subirFoto" path="{{url_for('foto')}}">subir foto</button>
-    </div>
-    <div id="divUsuario">
-      <h2>{{usuario}}</h2 >
-    </div>
-  </section>
-  <section id="publicar">
-    <form method = "POST" action="{{url_for('post')}}" id="postform">
-      <input type="text" id="usuario" name="usuario" value={{usuario}} hidden>
-      <label>Titulo:</label>      
-      <input type="text" name="titulo" required>
-      <label>Texto:</label>
-      <textarea form="usrform" name="texto" placeholder="escriba su post" rows=3 minlength=10 maxlength=300 required></textarea>
-      <input type="submit" value="Publicar">
-    </form>
-  </section>
+  <div id="container">
+    <header>
+      <div>
+        <a href="{{url_for('blog')}}"><img src="{{ url_for('static', filename='images/inove_icon.png') }}" alt="inove" width="50"></a>
+        <h4>inoveblog</h4>
+      </div>
+      <div id="user">
+        <a href="{{url_for('logout')}}"><h3>salir</h3></a>
+        <img src="{{ url_for('static', filename='images/avatar_icon.png') }}" alt="inove" width="50">
+      </div>
+    </header>
+    <section id="seccionUsuario">
+      <div id="divFoto">
+        <img src="{{ foto }}" alt="Image">
+        <input type="file" id="foto" name ="foto"/>
+        <button id="subirFoto" path="{{url_for('foto')}}">subir foto</button>
+      </div>
+      <div id="divUsuario">
+        <h3>{{usuario}}</h3>
+      </div>
+    </section>
+    <section>
+      <h2>API Key:</h2 >
+      <p>{{apikey}}</p>
+    </section>
+    <section id="seccionPublicar">
+      <input type="hidden" id="usuario" name="usuario" value={{usuario}}>
+      <input type="hidden" id="apikey" name="usuario" value={{apikey}}>
+      <label for="titulo">Titulo:</label>      
+      <input type="text" id="titulo" name="titulo">
+      <label for="texto">Texto:</label>
+      <textarea id="texto" name="texto" placeholder="escriba su post" rows=3 minlength=10 maxlength=300></textarea>
+      <button id="publicar" path="{{url_for('post')}}">Publicar</button>
+    </section>
+    <section id="posteos">
+
+    </section>
+  </div>
 
   <script src="{{ url_for('static', filename='js/blog.js') }}"></script>
 

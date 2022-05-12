@@ -10,7 +10,7 @@
     <input id="usuario" type="text" value="diego" placeholder="usuario"/>
     <label for="usuario">Contraseña de curso:</label>
     <input id="password" type="password" value="inovejs" placeholder="contraseña"/>
-    <button id="ingresar" path="{{url_for('bloglogin')}}" redirect="{{url_for('blog')}}">Identificarse</button>
+    <button id="ingresar" path="{{url_for('login')}}" redirect="{{url_for('blog')}}">Identificarse</button>
 
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>

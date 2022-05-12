@@ -16,33 +16,32 @@ app.secret_key = "flask_session_key_inventada"
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///inoveblog.db"
-blogdb = SQLAlchemy()
-blogdb.init_app(app)
+db = SQLAlchemy()
+db.init_app(app)
 
-class BlogUser(UserMixin, blogdb.Model):
-    id = blogdb.Column(blogdb.Integer, primary_key=True)
-    name = blogdb.Column(blogdb.String(1000))
-    apikey = blogdb.Column(blogdb.String(100))
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(1000))
+    apikey = db.Column(db.String(100))
 
 # Configurar el sistema de login
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 login_manager = LoginManager()
-login_manager.login_view = 'bloglogin'
+login_manager.login_view = 'login'
 login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return BlogUser.query.get(int(user_id))
+    return User.query.get(int(user_id))
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, "static", "upload")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 LOGIN_PASSWORD = "inovejs"
-    
 
-@app.route('/blog/login', methods=['GET', 'POST'])
-def bloglogin():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     try:
         if request.method == 'GET':
             return render_template('login.html')
@@ -60,13 +59,13 @@ def bloglogin():
                 print("USER incorrect")
                 return Response(status=400)
 
-            user = BlogUser.query.filter_by(name=usuario).first()
+            user = User.query.filter_by(name=usuario).first()
             # Si el usuario existe no puedo crearlo
             if user is None:
-                user = BlogUser(name=usuario, apikey="ABC123")
+                user = User(name=usuario, apikey="ABC123")
                 # add the new user to the database
-                blogdb.session.add(user)
-                blogdb.session.commit()
+                db.session.add(user)
+                db.session.commit()
 
             login_user(user)
             return Response(status=200)
@@ -76,18 +75,25 @@ def bloglogin():
         print(jsonify({'trace': traceback.format_exc()}))
         return Response(status=400)
 
-@app.route("/")
-def index():
-    return redirect(url_for('bloglogin'))
 
-@app.route("/blog")
+@app.route('/logout')
+@login_required
+def logout():
+    return "hola"
+
+@app.route("/")
 @login_required
 def blog():
     try:
         usuario = current_user.name
-        foto = url_for('static', filename=f'upload/{usuario}.png')
+        if os.path.exists(os.path.join(UPLOAD_FOLDER, f"{usuario}.png")) == True:
+            foto = url_for('static', filename=f'upload/{usuario}.png')
+        else:
+            foto = url_for('static', filename=f'images/avatar_icon.png')
         return render_template('blog.html', usuario=usuario, foto=foto, apikey=current_user.apikey)
-    except:
+    except Exception as e:
+        print(e)
+        print(jsonify({'trace': traceback.format_exc()}))
         return Response(status=400)
 
 @app.route('/inoveblog/api/foto', methods=['POST'])
@@ -123,7 +129,7 @@ def post():
 @app.before_first_request
 def before_first_request_func():
     # Crear aquí todas las bases de datos
-    blogdb.create_all()
+    db.create_all()
     print("Base de datos generada")
 
 
@@ -131,4 +137,4 @@ if __name__ == '__main__':
     print('Inove@Server start!')
 
     # Lanzar server
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="127.0.0.1", port=5000, use_reloader=True)
