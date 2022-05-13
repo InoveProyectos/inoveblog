@@ -63,6 +63,7 @@
           {
             "in": "query",
             "name": "usuario",
+            "required": true,
             "schema": {
               "type": "string",
               "description": "usuario de inove"
@@ -71,6 +72,7 @@
           {
             "in": "query",
             "name": "apikey",
+            "required": true,
             "schema": {
               "type": "string",
               "description": "apikey del usuario"
@@ -138,6 +140,42 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Credenciales invalidas"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "post"
+        ],
+        "description": "Endpoint que permite borrar todos los posts de un usuario",
+        "consumes": "application/json",
+        "produces": "application/json",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "usuario": { 
+                    "description": "Usuario de inove",
+                    "type": "string"
+                  },
+                  "apikey": {
+                    "description": "API Key",
+                    "type": "string"
+                  }
+                },
+                "required": ["usuario", "apikey"] 
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Confirmación de posts borrados"
           },
           "401": {
             "description": "Credenciales invalidas"

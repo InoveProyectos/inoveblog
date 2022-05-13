@@ -136,7 +136,7 @@ def api_login():
         return Response(status=401)
 
 
-@app.route('/api/v1.0/post', methods=['GET', 'POST'])
+@app.route('/api/v1.0/post', methods=['GET', 'POST', 'DELETE'])
 def post():
     try:
         if request.method == 'GET':
@@ -144,18 +144,17 @@ def post():
             apikey = request.args.get('apikey')
 
             if usuario is None or apikey is None:
-                return Response(status=400)
+                return Response(status=401)
 
             user = User.query.filter_by(name=usuario).first()
             if user is None or user.apikey != apikey:
                 # Si el usuario no existe o la apikey es invalida salgo
-                return Response(status=400)
+                return Response(status=401)
     
             posts = []
             for post in Post.query.filter_by(user=user).order_by(Post.id.desc()).limit(3):
                 posts.append({"titulo": post.titulo, "texto": post.texto})
             return make_response(jsonify({"posts": posts}), 200)
-
 
         if request.method == 'POST':
             # Validate request data format
@@ -167,15 +166,11 @@ def post():
             apikey = request.json['apikey']
             titulo = request.json['titulo']
             texto = request.json['texto']
-            print(usuario)
-            print(apikey)
-            print(titulo)
-            print(texto)
 
             user = User.query.filter_by(name=usuario).first()
             if user is None or user.apikey != apikey:
                 # Si el usuario no existe o la apikey es invalida salgo
-                return Response(status=400)
+                return Response(status=401)
 
             post = Post(user=user, titulo=titulo, texto=texto)
             # agregar post a la base de datos
@@ -183,10 +178,30 @@ def post():
             db.session.commit()
 
             return make_response(jsonify({"id": post.id, "titulo": post.titulo, "texto": post.texto}), 200)
+
+        if request.method == 'DELETE':
+            # Validate request data format
+            content_type = request.headers.get('Content-Type')
+            if (content_type != 'application/json'):
+                return Response(status=415)
+
+            usuario = request.json['usuario']
+            apikey = request.json['apikey']
+
+            user = User.query.filter_by(name=usuario).first()
+            if user is None or user.apikey != apikey:
+                # Si el usuario no existe o la apikey es invalida salgo
+                return Response(status=401)
+
+            posts = Post.query.filter_by(user=user)
+            posts.delete()
+            db.session.commit()
+
+            return Response(status=200)
     except Exception as e:
         print(e)
         print(jsonify({'trace': traceback.format_exc()}))
-        return Response(status=400)
+        return Response(status=401)
 
 # Este método se ejecutará solo una vez
 # la primera vez que ingresemos a un endpoint
