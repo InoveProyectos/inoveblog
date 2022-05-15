@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/inove_icon.png') }}" sizes="32x32" />
   <title>Inove Blog</title>
@@ -11,7 +12,7 @@
   <div id="container">
     <header>
       <div>
-        <a href="{{url_for('blog')}}"><img src="{{ url_for('static', filename='images/inove_icon.png') }}" alt="inove" width="50"></a>
+        <a href="{{url_for('docs')}}"><img src="{{ url_for('static', filename='images/inove_icon.png') }}" alt="inove" width="50"></a>
         <h4>inoveblog</h4>
       </div>
       <div id="user">

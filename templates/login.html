@@ -3,18 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/inove_icon.png') }}" sizes="32x32" />
     <title>Inove Blog</title>
 </head>
 <body>
-    <h1>Bienvenido</h1>
-    <label for="usuario">Usuario de inove:</label>
-    <input id="usuario" type="text" value="diego" placeholder="usuario"/>
-    <label for="usuario">Contraseña de curso:</label>
-    <input id="password" type="password" value="inovejs" placeholder="contraseña"/>
-    <button id="ingresar" path="{{url_for('api_login')}}" redirect="{{url_for('blog')}}">Identificarse</button>
+  <div id="container">
+    <header>
+      <div>
+      <a href="{{url_for('docs')}}"><img src="{{ url_for('static', filename='images/inove_icon.png') }}" alt="inove" width="50"></a>
+      <h4>inoveblog</h4>
+      </div>
+      <div id="user">
+      </div>
+    </header>
+    <section id="seccionLogin">
+      <h1>Bienvenido</h1>
+      <div id="containerLogin">
+        <label for="usuario"><b>Usuario de inove</b></label>
+        <input id="usuario" type="text" value="" placeholder="usuario"/>
+        <label for="usuario"><b>Contraseña de curso</b></label>
+        <input id="password" type="password" value="" placeholder="contraseña"/>
+        <button id="ingresar" path="{{url_for('api_login')}}" redirect="{{url_for('blog')}}">Identificarse</button>
+      </div>
+    </section>
+  </div>
 
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 </html>

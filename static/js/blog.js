@@ -1,4 +1,8 @@
 
+// The x-www-form-urlencoded is used more generally to send
+// text data to the server
+// while multipart/form-data is used to send binary data,
+// most notably for uploading files to the server.
 
 document.querySelector("#subirFoto").onclick = async () => {
     let formData = new FormData();
@@ -11,6 +15,9 @@ document.querySelector("#subirFoto").onclick = async () => {
     formData.append('apikey', apikey);
     formData.append('foto', fileField.files[0]);
     
+    // Como estamos enviando un archivo el fetch
+    // configurara el body y header para enviar
+    // datos binarios (multipart/form-data)
     fetch(url, {
         method: 'POST',
         body: formData
@@ -23,14 +30,23 @@ document.querySelector("#publicar").onclick = async () => {
     let formData = new FormData();
     const usuario = document.querySelector("#usuario").value;
     const apikey = document.querySelector("#apikey").value;
+    const titulo = document.querySelector("#titulo").value;
+    const texto = document.querySelector("#texto").value;
     const url = document.querySelector("#publicar").getAttribute("path");
     
-    formData.append('usuario', usuario);
-    formData.append('foto', fileField.files[0]);
+    data = {
+        usuario: usuario,
+        apikey: apikey,
+        titulo: titulo,
+        texto: texto,
+    }
     
     fetch(url, {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     })
     .then(response => location.reload())
     .catch(error => console.error('Error:', error))
@@ -60,8 +76,9 @@ fetch(url + "?" + query)
             accumulator += 
                 `
                 <div>
-                    <p>${post.titulo}</p>
-                    <p>${post.texto}</p>
+                    <p id="titulo">${post.titulo}</p>
+                    <p id="texto">${post.texto}</p>
+                    <hr>
                 </div>
                 `
         });

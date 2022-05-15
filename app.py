@@ -1,5 +1,7 @@
 import os
 import json
+import random
+import string
 import requests
 from datetime import datetime
 
@@ -59,7 +61,9 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
-    return "hola"
+    # Deslogarse
+    logout_user()
+    return redirect(url_for('login'))
 
 @app.route("/")
 @login_required
@@ -76,17 +80,6 @@ def blog():
         print(jsonify({'trace': traceback.format_exc()}))
         return Response(status=400)
 
-@app.route('/inoveblog/api/foto', methods=['POST'])
-def foto():
-    try:
-        usuario = request.form['usuario']
-        f = request.files['foto']
-        f.save(os.path.join(UPLOAD_FOLDER, f"{usuario}.png"))
-        return redirect(url_for('blog', usuario=usuario))
-    except:
-        return Response(status=400)
-
-
 # Referencia:
 # https://swagger.io/specification/
 @app.route('/docs')
@@ -100,7 +93,8 @@ def api_login():
     try:
         # Validate request data format
         content_type = request.headers.get('Content-Type')
-        if (content_type != 'application/x-www-form-urlencoded'):
+        if ('application/x-www-form-urlencoded' not in content_type and
+            'multipart/form-data' not in content_type ):
             return Response(status=415)
 
         # Read data
@@ -122,7 +116,12 @@ def api_login():
         user = User.query.filter_by(name=usuario).first()
         # Si el usuario existe no puedo crearlo
         if user is None:
-            user = User(name=usuario, apikey="ABC123")
+            # Crear password
+            # https://pynative.com/python-generate-random-string/
+            #characters = string.ascii_lowercase + string.digits + string.punctuation
+            characters = string.ascii_lowercase + string.digits
+            apikey = ''.join(random.choice(characters) for i in range(8))
+            user = User(name=usuario, apikey=apikey)
             # agregar usuario a la base de datos
             db.session.add(user)
             db.session.commit()
@@ -159,7 +158,7 @@ def post():
         if request.method == 'POST':
             # Validate request data format
             content_type = request.headers.get('Content-Type')
-            if (content_type != 'application/json'):
+            if 'application/json' not in content_type:
                 return Response(status=415)
 
             usuario = request.json['usuario']
@@ -182,7 +181,7 @@ def post():
         if request.method == 'DELETE':
             # Validate request data format
             content_type = request.headers.get('Content-Type')
-            if (content_type != 'application/json'):
+            if 'application/json' not in content_type:
                 return Response(status=415)
 
             usuario = request.json['usuario']
@@ -198,6 +197,54 @@ def post():
             db.session.commit()
 
             return Response(status=200)
+    except Exception as e:
+        print(e)
+        print(jsonify({'trace': traceback.format_exc()}))
+        return Response(status=401)
+
+
+@app.route('/api/v1.0/foto', methods=['POST'])
+def foto():
+    try:
+        # Validate request data format
+        content_type = request.headers.get('Content-Type')
+        if ('application/x-www-form-urlencoded' not in content_type and
+            'multipart/form-data' not in content_type ):
+            return Response(status=415)
+
+        usuario = request.form['usuario']
+        apikey = request.form['apikey']
+
+        user = User.query.filter_by(name=usuario).first()
+        if user is None or user.apikey != apikey:
+            # Si el usuario no existe o la apikey es invalida salgo
+            return Response(status=401)
+
+        f = request.files['foto']
+        f.save(os.path.join(UPLOAD_FOLDER, f"{usuario}.png"))
+        return redirect(url_for('blog', usuario=usuario))
+    except:
+        return Response(status=400)
+
+@app.route('/api/v1.0/reset')
+def reset():
+    try:
+        usuario = request.args.get('usuario')
+        apikey = request.args.get('apikey')
+
+        if usuario is None or apikey is None:
+            return Response(status=401)
+
+        user = User.query.filter_by(name=usuario).first()
+        if user is None or user.apikey != apikey:
+            # Si el usuario no existe o la apikey es invalida salgo
+            return Response(status=401)
+
+        db.session.remove()
+        db.drop_all()
+        db.create_all()
+        return Response(status=200)
+
     except Exception as e:
         print(e)
         print(jsonify({'trace': traceback.format_exc()}))

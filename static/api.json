@@ -182,6 +182,48 @@
           }
         }
       }
+    },
+    "/api/v1.0/foto": {
+      "post": {
+        "tags": [
+          "foto"
+        ],
+        "description": "Endpoint que permite logearnos al sistema",
+        "consumes": "multipart/form-data",
+        "produces": "application/json",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "foto": { 
+                    "description": "Foto del usuario",
+                    "type": "file"
+                  },
+                  "usuario": { 
+                    "description": "Usuario de inove",
+                    "type": "string"
+                  },
+                  "apikey": {
+                    "description": "API key del usuario",
+                    "type": "string"
+                  }
+                },
+                "required": ["foto", "usuario", "apikey"] 
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Imagen subida con éxito"
+          },
+          "401": {
+            "description": "Credenciales invalidas"
+          }
+        }
+      }
     }
   }
 }
