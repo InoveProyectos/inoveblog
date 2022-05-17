@@ -3,6 +3,7 @@ import json
 import random
 import string
 import requests
+import time
 from datetime import datetime
 
 import traceback
@@ -74,6 +75,7 @@ def blog():
             foto = url_for('static', filename=f'upload/{usuario}.png')
         else:
             foto = url_for('static', filename=f'images/avatar_icon.png')
+        foto += f"?v={int(time.time())}"
         return render_template('blog.html', usuario=usuario, foto=foto, apikey=current_user.apikey)
     except Exception as e:
         print(e)

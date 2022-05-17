@@ -4,6 +4,14 @@
 // while multipart/form-data is used to send binary data,
 // most notably for uploading files to the server.
 
+document.querySelector("#foto").onchange = () => {
+    const fileField = document.querySelector("#foto");
+    if(fileField.files[0].size > 1*1024*1024) { // more than 1MB
+        alert(`El archivo ${fileField.files[0].name} es mayor a 1MB.`);
+        fileField.value = null;
+    }
+};
+
 document.querySelector("#subirFoto").onclick = async () => {
     let formData = new FormData();
     const fileField = document.querySelector("#foto");
@@ -48,7 +56,7 @@ document.querySelector("#publicar").onclick = async () => {
         },
         body: JSON.stringify(data)
     })
-    .then(response => location.reload())
+    .then(response => window.location.reload(true))
     .catch(error => console.error('Error:', error))
 }
 
