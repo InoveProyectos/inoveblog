@@ -15,6 +15,10 @@ app = Flask(__name__)
 # Clave que utilizaremos para encriptar los datos
 app.secret_key = "flask_session_key_inventada"
 
+# Cors
+from flask_cors import CORS, cross_origin
+CORS(app)
+
 # Base de datos
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
@@ -91,6 +95,7 @@ def docs():
 # ---------------- API ------------------------
 
 @app.route('/api/v1.0/login', methods=['POST'])
+@cross_origin(origin='*', headers=['Content-Type','Authorization'])
 def api_login():
     try:
         # Validate request data format
@@ -138,6 +143,7 @@ def api_login():
 
 
 @app.route('/api/v1.0/post', methods=['GET', 'POST', 'DELETE'])
+@cross_origin(origin='*', headers=['Content-Type','Authorization'])
 def post():
     try:
         if request.method == 'GET':
@@ -206,6 +212,7 @@ def post():
 
 
 @app.route('/api/v1.0/foto', methods=['POST'])
+@cross_origin(origin='*', headers=['Content-Type','Authorization'])
 def foto():
     try:
         # Validate request data format
