@@ -133,6 +133,7 @@ def api_login():
             db.session.add(user)
             db.session.commit()
 
+        print("login success of user", user.name)
         login_user(user)
         return make_response(jsonify({"apikey": user.apikey}), 200)
 
