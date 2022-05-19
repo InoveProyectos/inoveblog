@@ -9,6 +9,17 @@ from datetime import datetime
 import traceback
 from flask import Flask, request, make_response, jsonify, render_template, Response, redirect, url_for
 
+def get_env_variable(name):
+    try:
+        return os.environ[name]
+    except KeyError:
+        message = "Expected environment variable '{}' not set.".format(name)
+        raise Exception(message)
+
+# Cargar variables de entorno definidas (si es que hay)
+from dotenv import load_dotenv
+load_dotenv()
+
 # Crear el server Flask
 app = Flask(__name__)
 
@@ -22,7 +33,9 @@ CORS(app)
 # Base de datos
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///inoveblog.db"
+#app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///inoveblog.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = get_env_variable("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy()
 db.init_app(app)
 

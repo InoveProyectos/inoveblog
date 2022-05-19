@@ -42,7 +42,7 @@ document.querySelector("#publicar").onclick = async () => {
     const texto = document.querySelector("#texto").value;
     const url = document.querySelector("#publicar").getAttribute("path");
     
-    data = {
+    const data = {
         usuario: usuario,
         apikey: apikey,
         titulo: titulo,
